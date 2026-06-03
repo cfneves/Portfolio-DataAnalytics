@@ -1,0 +1,178 @@
+-- colaboradores
+SELECT DISTINCT RA_FILIAL AS FILIAL,
+                RA_MAT AS MATRICULA,
+                RA_TNOTRAB AS TURNO,
+                RA_CATFUNC AS CATEGORIA_FUNCIONARIO,
+                RA_ESTCIVI AS ESTADO_CIVIL,
+                RA_GRINRAI AS GRINRAI,
+                RA_DEPTO AS DEPARTAMENTO,
+                CASE ISNUMERIC(RA_CARGO) 
+						WHEN 1 
+							THEN LTRIM(RTRIM(RA_CARGO))
+						ELSE
+							'-1' 
+						END AS CARGO,
+				RA_CODFUNC AS CODIGO_FUNCAO,
+				RA_PROCES AS FUNCIONARIO_PROCESSO,
+				RA_CC AS CENTRO_CUSTO,
+				RA_ITEM AS ITEM_CONTABIL,
+				RA_CLVL AS CLASSE_VALOR,
+				--SRA.RA_NOME                    AS NOME,
+				REPLACE(REPLACE(REPLACE(SUBSTRING(SRA.RA_NOME , 1, CHARINDEX(' ', SRA.RA_NOME , 1) - 1),'A','O'),'I','A'),'E','U') AS APELIDO,
+				--SRA.RA_APELIDO                 AS APELIDO,
+				CASE SRA.RA_SEXO
+					WHEN 'F' THEN 'Feminino'
+					WHEN 'M' THEN 'Masculino'
+				END                            AS SEXO,
+				SRA.RA_NACIONA                 AS NACIONALIDADE,
+				SRA.RA_NATURAL                 AS NATURALIDADE,
+				CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC ))      AS DATA_NASCIMENTO,
+				CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_ADMISSA ))   AS DATA_ADMISSAO,
+				CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_DEMISSA ))   AS DATA_DEMISSAO,				
+				SRA.RA_TIPOADM                 AS TIPOADM,
+				SRA.RA_SITFOLH                 AS SITFOLH,
+				SRA.RA_TIPOPGT                 AS TIPOPAGAMENTO,
+				SRA.RA_VIEMRAI                 AS VIEMRAI,
+				SRA.RA_RESCRAI                 AS RESCRAI,
+				SRA.RA_CATEG                   AS CATEGSEFIP,
+				SRA.RA_CATEFD                  AS CATEGESOCIAL,
+				SRA.RA_TPCONTR                 AS TPCONTRATO,
+				SRA.RA_SINDICA                 AS SINDICATO,
+				--SRA.RA_CIC                     AS CPF,
+				--SRA.RA_PIS                     AS PIS,
+				--SRA.RA_RG                      AS RG,
+				--SRA.RA_NUMCP                   AS NUMCP,
+				SRA.RA_SERCP                   AS SERCP,
+				SRA.RA_REGRA                   AS REGRAAPONT,
+				CASE SRA.RA_ADCINS
+					WHEN '1' THEN 'Não'
+					WHEN '2' THEN 'Sim'
+				END                            AS PERICULOSIDADE,
+				CASE SRA.RA_ADCINS
+					WHEN '1' THEN 'Não'
+					WHEN '2' THEN 'Sim'
+				END                            AS INSALUBRIDADE,
+				CASE SRA.RA_TPDEFFI
+					WHEN '0' THEN 'Nao possui Deficiencia'
+					WHEN '1' THEN 'Fisica'
+					WHEN '2' THEN 'Auditiva'
+					WHEN '3' THEN 'Visual'
+					WHEN '4' THEN 'Intelectual(mental)'
+					WHEN '5' THEN 'Multipla'
+					WHEN '6' THEN 'Reabilitado'
+				END                            AS EXISTE_DEFICIENCIA,
+ 		
+                        COALESCE(( CASE
+                                     WHEN SRA.RA_RESCRAI IN ( '30', '31' ) THEN
+                                     SRA.RA_ADMISSA
+                                     ELSE (SELECT Min(SRE.RE_DATA)
+                                           FROM   SRE010 SRE
+                                           WHERE  SRA.RA_FILIAL = SRE.RE_FILIALP
+                                                  AND SRA.RA_MAT = SRE.RE_MATP
+                                                  AND SRA.RA_CC = SRE.RE_CCP)
+                                   END ), SRA.RA_ADMISSA) AS VERIFICA_ADMISSÃO,
+                        COALESCE(( CASE
+                                     WHEN SRA.RA_RESCRAI NOT IN ( '30', '31' )
+                                   THEN
+                                     SRA.RA_DEMISSA
+                                     ELSE (SELECT Min(SRE.RE_DATA)
+                                           FROM   SRE010 SRE
+                                           WHERE  SRA.RA_FILIAL = SRE.RE_FILIALD
+                                                  AND SRA.RA_MAT = SRE.RE_MATD
+                                                  AND SRA.RA_CC = SRE.RE_CCD)
+                                   END ), SRA.RA_DEMISSA) AS VERIFICA_DEMISSAO,
+					   CASE
+						   WHEN SRA.RA_SITFOLH = 'D' THEN 'DEMITIDO' 
+						   WHEN SRA.RA_SITFOLH = 'A' THEN 'AFASTADO' 
+						   WHEN SRA.RA_SITFOLH = 'F' THEN 'FERIAS' 
+								ELSE 'TRABALHANDO' 
+						 END                                                                      AS SITUACAO_FUNCIONARIO 
+						 ,SRA.RA_SALARIO
+						 ,DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) AS IDADE,
+						 CASE 
+							WHEN DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) <= 18
+								THEN '00-18'
+							WHEN DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) > 18 AND DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) <= 23
+								THEN '19-23'
+							WHEN DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) > 23 AND DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) <= 28
+								THEN '24-28'
+							WHEN DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) > 28 AND DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) <= 33
+								THEN '29-33'
+							WHEN DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) > 33 AND DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) <= 38
+								THEN '34-38'
+							WHEN DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) > 38 AND DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) <= 43
+								THEN '39-43'
+							WHEN DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) > 43 AND DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) <= 48
+								THEN '44-48'
+							WHEN DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) > 48 AND DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) <= 53
+								THEN '49-53'
+							WHEN DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) > 53 AND DATEDIFF(Year, CONVERT(DATE, CONVERT(VARCHAR(8), SRA.RA_NASC )), getdate()) <= 58
+								THEN '54-58'
+							ELSE '59 Acima'
+							END AS FAIXA_IDADE
+        FROM   SRA020 SRA WITH(NOLOCK)
+        WHERE  SRA.D_E_L_E_T_ = ' '
+		ORDER BY 3  
+
+-- FÉRIAS 
+SELECT SRH.RH_FILIAL		AS FILIAL
+	  ,SRH.RH_MAT			AS MATRICULA
+	  ,SRH.RH_SALMES		AS SALARIO_MES
+	  ,SRH.RH_SALDIA		AS SALARIO_DIA
+	  ,SRH.RH_SALHRS		AS SALARIO_HORA
+	  ,CONVERT(DATE, CONVERT(VARCHAR(8), SRH.RH_DATABAS ))	AS DATA_BASE_FERIAS_INICIAL
+	  ,CONVERT(DATE, CONVERT(VARCHAR(8),SRH.RH_DBASEAT ))	AS DATA_BASE_FERIAS_FINAL
+	  ,SRH.RH_DFERVEN		AS DIAS_FERIAS_VENCIDAS
+	  ,SRH.RH_DFERIAS		AS DIAS_FERIAS
+	  ,CONVERT(DATE, CONVERT(VARCHAR(8),SRH.RH_DATAINI ))	AS DATA_INICIO_FERIAS
+	  ,CONVERT(DATE, CONVERT(VARCHAR(8),SRH.RH_DATAFIM ))	AS DATA_FINAL_FERIAS
+	  ,CONVERT(DATE, CONVERT(VARCHAR(8),SRH.RH_DTAVISO ))	AS DATA_AVISO_FERIAS
+	  ,CONVERT(DATE, CONVERT(VARCHAR(8),SRH.RH_DTRECIB ))	AS DATA_RECEBIMENTO_FERIAS
+	  ,SRH.RH_PERIODO		AS PERIODO_FERIAS
+	  ,SRH.RH_SALARIO		AS SALARIO_FERIAS
+	  ,SRH.RH_DAFASTA		AS DIAS_AFASTAMENTO_PERIODO
+	  ,SRH.RH_OBSERVA		AS OBSERVACOES_FERIAS
+	  ,SRH.RH_ACEITE		AS ACEITE_FERIAS
+	FROM SRH010 SRH WITH(NOLOCK)
+WHERE SRH.D_E_L_E_T_ = ''
+
+-- CARGO
+SELECT Q3_FILIAL AS FILIAL,
+       SQ3.Q3_CARGO         AS CODIGO_CARGO,
+       SQ3.Q3_DESCSUM       AS CARGO
+FROM   SQ3010 SQ3
+WHERE  SQ3.D_E_L_E_T_ = ' '
+
+--FUNÇÃO COLABORADOR
+SELECT RJ_FILIAL AS FILIAL,
+       SRJ.RJ_FUNCAO                 AS CODIGO_FUNCAO,
+       SRJ.RJ_DESC                   AS FUNCAO
+FROM   SRJ010 SRJ
+WHERE  SRJ.D_E_L_E_T_ = ' '
+
+--DEPARTAMENTO DO COLABORADOR
+SELECT SQB.QB_FILIAL as FILIAL,
+       SQB.QB_DEPTO         AS CODIGO_DEPARTAMENTO,
+       SQB.QB_DESCRIC       AS DESCRICAO_DEPARTAMENTO
+FROM   SQB010 SQB
+WHERE  SQB.D_E_L_E_T_ = ' '
+
+--ESTADO CIVIL
+SELECT X5_FILIAL AS FILIAL,
+       X5_CHAVE             AS COD_ESTADO_CIVIL,
+       X5_DESCRI            AS DESC_ESTCIVL
+FROM   SX5010 SX5
+WHERE  SX5.X5_TABELA = '33'
+       AND SX5.D_E_L_E_T_ = ' '
+
+-- Centro de Custo 
+SELECT CTT_FILIAL
+	  ,RTRIM(LTRIM(CTT_CUSTO)) AS CENTROCUSTO
+	  ,CTT_DESC01 AS NOME_CENTRO
+	  ,CTT_BLOQ 
+	  ,CTT_CCSUP
+	FROM CTT010 (NOLOCK)
+WHERE D_E_L_E_T_ = ''
+
+
+

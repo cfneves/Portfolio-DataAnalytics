@@ -1,0 +1,38 @@
+# Power BI temporários e cache
+*.pbix.bak
+*.pbix.tmp
+*.pbix~
+
+# Cache do Power BI Desktop
+.pbi/
+pbi_cache/
+
+# Arquivos de sistema Windows
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Claude Code (metadados locais do assistente)
+.claude/
+
+# Dados sensíveis — nunca versionar arquivos com dados reais de produção
+# Descomente as linhas abaixo se quiser excluir os dados do repositório:
+# Dados/*.xlsx
+# Dados/*.xls
+# Dados/*.csv
+
+# Excel temporários
+~$*.xlsx
+~$*.xls
+~$*.xlsm
+
+# Arquivos temporários do sistema
+*.tmp
+*.temp
+*.log
