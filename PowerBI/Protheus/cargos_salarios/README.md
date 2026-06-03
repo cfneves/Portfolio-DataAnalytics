@@ -46,16 +46,16 @@ O dashboard é navegado por um menu lateral com 5 seções:
 
 As queries SQL extraem dados diretamente das tabelas do módulo de RH do Protheus:
 
-| Tabela Protheus | Conteúdo | Campos-chave |
+| Tabela Protheus | Conteúdo | Campos utilizados |
 |---|---|---|
-| `SRA020` | Colaboradores | Matrícula, Cargo, Departamento, Salário, Admissão, Demissão, Situação |
-| `SRH010` | Férias | Período, datas de início/fim, salário durante férias |
-| `SQ3010` | Cargos | Código e descrição dos cargos |
-| `SRJ010` | Funções | Código e descrição das funções |
-| `SQB010` | Departamentos | Código e descrição dos departamentos |
-| `SX5010` | Estado Civil | Tabela genérica `33` — estados civis |
-| `CTT010` | Centros de Custo | Código, nome, bloqueio e hierarquia |
-| `SRE010` | Transferências | Histórico de transferências (para cálculo de admissão efetiva) |
+| `SRA020` | Colaboradores | `RA_MAT` · `RA_CARGO` · `RA_DEPTO` · `RA_CC` · `RA_SALARIO` · `RA_ADMISSA` · `RA_DEMISSA` · `RA_SITFOLH` · `RA_SEXO` · `RA_NASC` · `RA_ESTCIV` · `RA_CODFUNC` · `RA_ADCINS` · `RA_DEFIFIS` · `RA_TPDEFFI` |
+| `SRH010` | Férias | `RH_MAT` · `RH_INICIO` · `RH_FIM` · `RH_RETORNO` · `RH_SALARIO` |
+| `SQ3010` | Cargos | `Q3_CODIGO` · `Q3_DESC` |
+| `SRJ010` | Funções | `RJ_CODIGO` · `RJ_DESC` |
+| `SQB010` | Departamentos | `QB_CODIGO` · `QB_DESCRIC` |
+| `SX5010` | Estado Civil | `X5_TABELA` · `X5_CHAVE` · `X5_DESCRI` (tabela `33`) |
+| `CTT010` | Centros de Custo | `CTT_CUSTO` · `CTT_DESC01` · `CTT_BLOQ` |
+| `SRE010` | Transferências | `RE_MAT` · `RE_DTINI` · `RE_DTFIM` · `RE_TIPO` |
 
 ### Lógica de negócio aplicada nas queries
 
