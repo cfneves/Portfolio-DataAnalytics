@@ -1,4 +1,4 @@
-# Live0019 — Gestão de Cargos e Salários | TOTVS Protheus
+# Gestão de Cargos e Salários | TOTVS Protheus
 
 > Dashboard Power BI desenvolvido para a gestão estratégica de cargos, salários e perfil do quadro de colaboradores, com integração direta ao ERP **TOTVS Protheus**.
 
@@ -6,42 +6,24 @@
 
 ## Visão Geral
 
-Este projeto faz parte de uma série de lives de Power BI focadas em **RH Analytics** com dados reais do ERP TOTVS Protheus. O dashboard oferece uma visão 360° da estrutura de cargos e salários da organização, permitindo análises de headcount, distribuição salarial, perfil demográfico dos colaboradores e gestão de férias.
+Dashboard de **RH Analytics** com dados do ERP TOTVS Protheus. Oferece uma visão 360° da estrutura de cargos e salários da organização, permitindo análises de headcount, distribuição salarial, perfil demográfico dos colaboradores e gestão de férias.
 
 | Item | Detalhe |
 |---|---|
 | **Ferramenta** | Power BI Desktop |
 | **ERP / Fonte** | TOTVS Protheus (SQL Server) |
-| **Versões** | V1 (4,7 MB) · V2 (4,2 MB) |
 | **Layouts** | Desktop e Mobile |
 | **Tema visual** | Fluid Art (azul/laranja) com neumorphism |
 
 ---
 
-## Estrutura do Projeto
+## Arquivo
 
 ```
-Live0019-GestaoCargosSalarios/
+cargos_salarios/
 │
-├── Dash/
-│   ├── Live0019-GestãoCargosSalariosProtheus.pbix      # Versão 1
-│   └── Live0019-GestãoCargosSalariosProtheusV2.pbix    # Versão 2
-│
-├── Dados/
-│   ├── DADOS_CARGOSSALARIOS.xlsx                        # Base de dados de cargos e salários
-│   └── D_DATA.xls                                       # Tabela dimensão de datas
-│
-├── Imagens/
-│   ├── BACKGROUND_COMPLETO.png                          # Background com cards de KPI
-│   ├── BACKGROUND_COMPLETO_MARCA_.png                   # Background com marca d'água
-│   ├── BACKGROUND_SIMPLES.png                           # Background limpo (desktop)
-│   ├── MOBILE_BACKGROUND.png                            # Background para layout mobile
-│   ├── BANNER_GRANDE.png                                # Banner do projeto
-│   ├── CARD_1.png … CARD_6.png                          # Ícones dos cards de KPI
-│   └── Modelo01.png … Modelo03.png                      # Wireframes de layout
-│
-└── Scripts/
-    └── Live0019-GestaoCarloseSalarios.txt               # Queries SQL (TOTVS Protheus)
+└── Dash/
+    └── 01 - GestãoCargosSalarios.pbix
 ```
 
 ---
@@ -119,14 +101,12 @@ FÉRIAS (SRH010) ─────── COLABORADORES (via MATRÍCULA)
 
 - Power BI Desktop (versão mais recente recomendada)
 - Acesso ao banco SQL Server do TOTVS Protheus (para conexão em produção)
-- Ou utilizar os arquivos Excel na pasta `Dados/` para visualização sem conexão ao ERP
 
 ### Abrindo o Dashboard
 
-1. Baixe o arquivo `.pbix` da pasta `Dash/`
+1. Baixe o arquivo `01 - GestãoCargosSalarios.pbix` da pasta `Dash/`
 2. Abra com o **Power BI Desktop**
-3. Se quiser conectar ao seu Protheus: vá em `Transformar Dados` → atualize a string de conexão SQL Server
-4. Se quiser usar os dados de exemplo: os arquivos Excel já estão mapeados na pasta `Dados/`
+3. Para conectar ao seu Protheus: vá em `Transformar Dados` → atualize a string de conexão SQL Server
 
 ### Configurando a conexão SQL (produção)
 
@@ -135,15 +115,6 @@ Substitua nas queries da fonte de dados:
 Servidor: <SEU_SERVIDOR_SQL>
 Banco: <SEU_BANCO_PROTHEUS>
 ```
-Execute as queries da pasta `Scripts/` para validar o acesso às tabelas antes de conectar.
-
----
-
-## Screenshots
-
-| Modelo 01 | Modelo 02 | Modelo 03 |
-|---|---|---|
-| ![Modelo 01](Imagens/Modelo01.png) | ![Modelo 02](Imagens/Modelo02.png) | ![Modelo 03](Imagens/Modelo03.png) |
 
 ---
 
@@ -152,15 +123,15 @@ Execute as queries da pasta `Scripts/` para validar o acesso às tabelas antes d
 ![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white)
 ![TOTVS](https://img.shields.io/badge/TOTVS%20Protheus-003366?style=for-the-badge&logoColor=white)
-![Excel](https://img.shields.io/badge/Microsoft%20Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white)
+![DAX](https://img.shields.io/badge/DAX-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 
 ---
 
 ## Sobre o Projeto
 
-Este dashboard foi construído durante uma sessão ao vivo (Live #019) com foco em demonstrar:
+Dashboard desenvolvido com foco em **RH Analytics** para o módulo de Cargos e Salários do TOTVS Protheus, demonstrando:
 
-- Integração Power BI + TOTVS Protheus via Direct Query / Import
+- Integração Power BI + TOTVS Protheus via SQL Server
 - Boas práticas de modelagem dimensional no contexto de RH
 - Conformidade com LGPD na construção de relatórios com dados sensíveis
 - Design profissional com themes e backgrounds customizados
@@ -177,4 +148,4 @@ Data Analyst | Power BI Developer
 
 ---
 
-*Projeto desenvolvido para fins educacionais e de portfólio. Dados sensíveis foram anonimizados.*
+*Projeto de portfólio. Dados sensíveis foram anonimizados conforme LGPD.*
