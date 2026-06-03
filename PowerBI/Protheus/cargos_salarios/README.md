@@ -2,6 +2,8 @@
 
 > Dashboard Power BI desenvolvido para a gestão estratégica de cargos, salários e perfil do quadro de colaboradores, com integração direta ao ERP **TOTVS Protheus**.
 
+![Dashboard Preview](assets/dashboard-preview.png)
+
 ---
 
 ## Visão Geral
